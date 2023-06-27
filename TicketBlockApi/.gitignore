@@ -1,0 +1,9 @@
+node_modules
+*.log
+dist
+
+package-lock.json
+.env
+/app/wallet/wallet.json
+/data/*.sq3
+/security

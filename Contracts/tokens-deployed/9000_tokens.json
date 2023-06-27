@@ -1,0 +1,18 @@
+[
+  {
+    "currency": "mtEVMOS",
+    "address": "0xE3cB58467250bd4178d737A87B87dc7AE00Dad62"
+  },
+  {
+    "currency": "mTick",
+    "address": "0x7EaCAC40f0474F846A4A313Dc668177098B530bE"
+  },
+  {
+    "currency": "mUSDT",
+    "address": "0x2F91F4B170F0D4897FdD24A94833F3485ed3372a"
+  },
+  {
+    "currency": "mUSDC",
+    "address": "0xb2869F895FC24790e81EF05a3AeF0F23897eC33b"
+  }
+]
