@@ -24,7 +24,7 @@ import { ganache, hardhat, okbTestChain, thetaTestnet } from './extra-chains';
 })
 export class Web3Service {
 
-  chains = [/*arbitrum, mainnet, polygon, fantom, fantomTestnet,*/ ganache, hardhat, sepolia];
+  chains = [/*arbitrum, mainnet, polygon, fantom, fantomTestnet, sepolia, */ ganache, hardhat, fantomTestnet];
   // 1. Define constants
   projectId = environment.walletConnectProjectId;
   web3Modal: Web3Modal| undefined;

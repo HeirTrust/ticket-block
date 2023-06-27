@@ -8,12 +8,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 	const {deployer} = await getNamedAccounts();
 
-	// await deploy('TicketMarket', {
-	// 	from: deployer,
-	// 	args: [],
-	// 	log: true,
-	// 	autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
-	// });
+	await deploy('TicketMarket', {
+		from: deployer,
+		args: [],
+		log: true,
+		autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
+	});
 };
 export default func;
 func.tags = ['TicketMarket'];

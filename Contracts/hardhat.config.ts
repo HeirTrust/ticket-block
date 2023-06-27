@@ -144,6 +144,11 @@ const config: HardhatUserConfig = {
 				process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY_2!] : [],
 			chainId: 9000,
 		},
+		fantom_t: {
+		  url: "https://rpc.ankr.com/fantom_testnet/",
+		  accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY_2] : [],
+		  chainId: 4002,
+		}, 
 	}),
 	paths: {
 		sources: 'src',

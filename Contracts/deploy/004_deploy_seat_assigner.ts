@@ -6,7 +6,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	const {ethers, deployments, getNamedAccounts} = hre;
 	const {deploy} = deployments;
 
-	// const {deployer, simpleERC20Beneficiary: buyer} = await getNamedAccounts();
+	const {deployer, simpleERC20Beneficiary: buyer} = await getNamedAccounts();
+
+	// Sepolia 
 
 	// await deploy('SeatAssigner', {
 	// 	from: deployer,
@@ -17,6 +19,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	// 	log: true,
 	// 	autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
 	// });
+
+	// Fantom
+
+	await deploy('SeatAssigner', {
+		from: deployer,
+		args: [
+			'0xfaFedb041c0DD4fA2Dc0d87a6B0979Ee6FA7af5F',
+			'0x38336BDaE79747a1d2c4e6C67BBF382244287ca6', //wrapper
+		],
+		log: true,
+		autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
+	});
+
+	// 0xfaFedb041c0DD4fA2Dc0d87a6B0979Ee6FA7af5F link 
+	// 0x38336BDaE79747a1d2c4e6C67BBF382244287ca6
 };
 export default func;
 func.tags = ['seat'];
