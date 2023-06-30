@@ -94,35 +94,39 @@ export class BuyTicketModalComponent {
         })
         const [address] = await walletClient!.getAddresses()
 
-        const tokenSaleContract = await getContract({
-          address: price.currency as `0x{string}`,
-          abi: erc20ABI
-        })
-        const allowance = await tokenSaleContract.read.allowance([address, this.event?.address as `0x{string}`] );
-        console.log('allowance: ',allowance, ', price: ', parseEther( price.price.toString()).toBigInt() )
-        if( allowance <  parseEther( price.price.toString()).toBigInt()){
-          const { request: approveRequest } = await publicClient.simulateContract({
-            // abi: parseAbi(['function addTicketCategory(string name, string logo, uint32 maxTickets, (uint256 price, address currency)[4], bool requiresNFT, address nftAddress, (string name, string value)[4])']), // EventABI,
-            abi: erc20ABI,
-            address:  price.currency as `0x${string}`,
-            functionName: 'approve',
-            //@ts-ignore
-            account: address,
-            args: [
-              this.event?.address as `0x${string}`, 
-              parseEther( price.price.toString()).toBigInt()
-            ],
-            // chain: this.w3s.chainId
+        if(price.currency != zeroAddress){
+          const tokenSaleContract = await getContract({
+            address: price.currency as `0x{string}`,
+            abi: erc20ABI
           })
-  
-          const approveHash = await walletClient!.writeContract(approveRequest)
-  
-          await publicClient.waitForTransactionReceipt( 
-            { hash: approveHash }
-          )
-  
-          await delay(5000);
+          const allowance = await tokenSaleContract.read.allowance([address, this.event?.address as `0x{string}`] );
+          console.log('allowance: ',allowance, ', price: ', parseEther( price.price.toString()).toBigInt() )
+          if( allowance <  parseEther( price.price.toString()).toBigInt()){
+            const { request: approveRequest } = await publicClient.simulateContract({
+              // abi: parseAbi(['function addTicketCategory(string name, string logo, uint32 maxTickets, (uint256 price, address currency)[4], bool requiresNFT, address nftAddress, (string name, string value)[4])']), // EventABI,
+              abi: erc20ABI,
+              address:  price.currency as `0x${string}`,
+              functionName: 'approve',
+              //@ts-ignore
+              account: address,
+              args: [
+                this.event?.address as `0x${string}`, 
+                parseEther( price.price.toString()).toBigInt()
+              ],
+              // chain: this.w3s.chainId
+            })
+    
+            const approveHash = await walletClient!.writeContract(approveRequest)
+    
+            await publicClient.waitForTransactionReceipt( 
+              { hash: approveHash }
+            )
+    
+            await delay(5000);
+          }
         }
+
+        
         
 
         
@@ -131,6 +135,9 @@ export class BuyTicketModalComponent {
         //   hash: approveHash,
   
         // })
+
+        const amount = +price.price
+        const fee = amount * 0.05
         
         
         // @ts-ignore
@@ -140,13 +147,15 @@ export class BuyTicketModalComponent {
           address: this.event?.address as `0x${string}`,
           functionName: 'buyTicket',
           //@ts-ignore
-          account: address,
+          account: address as `0x${string}`,
           args: [
             this.ticketType.id, 
             1,
             price.currency,
             metadataUrl
           ],
+          //@ts-ignore
+          value: price.currency == zeroAddress ?   parseEther( (amount + fee).toString() ).toHexString() : undefined
           // chain: this.w3s.chainId
         })
   

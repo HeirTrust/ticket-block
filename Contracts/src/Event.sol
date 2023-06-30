@@ -35,6 +35,8 @@ contract Event is ERC721Enumerable, ERC721URIStorage, Ownable {
 
 	Counters.Counter private _tokenCounter;
 
+	uint public ticketTransactionFee = 500; // value in percent * 100 eg 500 for 5%
+
 	// string _tokenUri;
 
 	// ITicketMarket ticketMarket;
@@ -57,7 +59,8 @@ contract Event is ERC721Enumerable, ERC721URIStorage, Ownable {
 		string memory ticketNFTSymbol,
 		address payable _admin,
 		// address _ticketMarket,
-		uint256 _ticketCategoryCreationFee
+		uint256 _ticketCategoryCreationFee,
+		uint _ticketTransactionFee
 	) ERC721(ticketNFTName, ticketNFTSymbol) {
 		// console.log('StartiIn  1');
 		ticketCategoryCreationFee = 0.0001 * 10 ** 18; // 0.0001
@@ -67,7 +70,7 @@ contract Event is ERC721Enumerable, ERC721URIStorage, Ownable {
 		// ticketMarket = ITicketMarket(_ticketMarket);
 
 		ticketCategoryCreationFee = _ticketCategoryCreationFee;
-
+		ticketTransactionFee = _ticketTransactionFee;
 		// _tokenUri = generateTokenURI(0);
 		_transferOwnership(_eventDetails.owner);
 	}
@@ -147,7 +150,7 @@ contract Event is ERC721Enumerable, ERC721URIStorage, Ownable {
 	function buyTicket(
 		uint256 _ticketCategoryId,
 		uint noOfTickets,
-		IERC20 saleCurrency,
+		address saleCurrency,
 		string memory metadataUrl
 	) external payable /*isNotOwnerOnly*/ {
 		// TODO: Check if eventDate has not been reached
@@ -169,20 +172,30 @@ contract Event is ERC721Enumerable, ERC721URIStorage, Ownable {
 		bool foundFeeCurrency = false;
 
 		for (uint i = 0; i < category.ticketPrices.length; i++) {
-			console.log(category.ticketPrices[i].currency, ", ", address(saleCurrency));
+			// console.log(category.ticketPrices[i].currency, ", ", address(saleCurrency));
 			if (category.ticketPrices[i].currency == address(saleCurrency)) {
 				foundFeeCurrency = true;
 				if (category.ticketPrices[i].price > 0) {
-					saleCurrency.safeTransferFrom(
-						msg.sender,
-						address(this),
-						noOfTickets * category.ticketPrices[i].price
-					);
-					saleCurrency.safeTransfer(
-						// address(this),
-						admin,
-						(noOfTickets * category.ticketPrices[i].price * 100) / 10000
-					); // 1% ticket fee
+					if(saleCurrency== address(0)){
+						console.log('msg.value: ', msg.value);
+						console.log('Cost  1', ((noOfTickets * category.ticketPrices[i].price * ticketTransactionFee) / 10000));
+
+						admin.transfer((noOfTickets * category.ticketPrices[i].price * ticketTransactionFee) / 10000);
+						
+        				// require(success, "DEXLocker: Transfer to liquidityLocker failed");//use call , since dexlocker is a proxy
+					}else{
+						IERC20(saleCurrency).safeTransferFrom(
+							msg.sender,
+							address(this),
+							noOfTickets * category.ticketPrices[i].price
+						);
+						IERC20(saleCurrency).safeTransfer(
+							// address(this),
+							admin,
+							(noOfTickets * category.ticketPrices[i].price * ticketTransactionFee) / 10000
+						); // 1% ticket fee
+					}
+					
 				}
 
 				break;

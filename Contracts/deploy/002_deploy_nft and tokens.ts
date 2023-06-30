@@ -27,26 +27,49 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 	const faucetContract = await ethers.getContract('Faucet');
 
+	// const c = [
+	// 	{
+	// 		name: 'Mock FTM',
+	// 		symbol: 'mFTM',
+	// 	},
+	// 	{
+	// 		name: 'pTicketBlck',
+	// 		symbol: 'pTick',
+	// 	},
+	// 	{
+	// 		name: 'Mock USD Tether',
+	// 		symbol: 'mUSDT',
+	// 	},
+	// 	{
+	// 		name: 'Mock Circle USD',
+	// 		symbol: 'mUSDC',
+	// 	},
+	// ];
+
+	//Fantom
 	const c = [
+		
 		{
-			name: 'Mock FTM',
-			symbol: 'mFTM',
-		},
-		{
-			name: 'Mock TicketBlck',
-			symbol: 'mTick',
-		},
-		{
-			name: 'Mock USD Tether',
-			symbol: 'mUSDT',
-		},
-		{
-			name: 'Mock Circle USD',
-			symbol: 'mUSDC',
-		},
+			name: 'pTicketBlck',
+			symbol: 'pTick',
+		}
 	];
 
 	const logTickets = [];
+	logTickets.push({
+		currency: 'FTM',
+		address: '0x0000000000000000000000000000000000000000'
+	})
+
+	logTickets.push({
+		currency: 'USDC',
+		address: '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75'
+	})
+
+	logTickets.push({
+		currency: 'FUSD',
+		address: '0xAd84341756Bf337f5a0164515b1f6F993D194E1f'
+	})
 	for (let index = 0; index < c.length; index++) {
 		const element = c[index];
 		const dr = await deploy('TestToken', {

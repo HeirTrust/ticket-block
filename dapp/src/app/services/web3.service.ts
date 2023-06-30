@@ -24,7 +24,7 @@ import { ganache, hardhat, okbTestChain, thetaTestnet } from './extra-chains';
 })
 export class Web3Service {
 
-  chains = [/*arbitrum, mainnet, polygon, fantom, fantomTestnet, sepolia, */ ganache, hardhat, fantomTestnet];
+  chains = [/*arbitrum, mainnet, polygon, sepolia, fantom, fantomTestnet,*/ ganache, hardhat,fantomTestnet, fantom];
   // 1. Define constants
   projectId = environment.walletConnectProjectId;
   web3Modal: Web3Modal| undefined;
@@ -61,7 +61,7 @@ export class Web3Service {
     this.publicClient = publicClient;
     const wagmiClient = createConfig({
       autoConnect: true,
-      connectors: w3mConnectors({ projectId: this.projectId, version: 1, chains: this.chains }),
+      connectors: w3mConnectors({ projectId: this.projectId, version: 2, chains: this.chains }),
       publicClient
     })
     this.ethereumClient = new EthereumClient(wagmiClient, this.chains)

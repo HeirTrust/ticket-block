@@ -46,8 +46,10 @@ contract EventManager is IEventManager, Ownable {
 
 	uint256 ticketCategoryCreationFee = 0 * 10 ** 18;
 
+	uint public ticketTransactionFee = 500; // value in percent * 100 eg 500 for 5%
+
 	constructor() /*ITicketMarket _ticketMarket*/ {
-		eventCreationFee = 0; // * 10 ** 18; // 0 for now
+		eventCreationFee = 2 ether; // * 10 ** 18; // 0 for now
 		// ticketMarket = _ticketMarket;
 	}
 
@@ -75,7 +77,8 @@ contract EventManager is IEventManager, Ownable {
 					ticketNFTSymbol,
 					payable(address(this)),
 					// address(ticketMarket),
-					ticketCategoryCreationFee
+					ticketCategoryCreationFee,
+					ticketTransactionFee
 				)
 			)
 		);
@@ -105,6 +108,10 @@ contract EventManager is IEventManager, Ownable {
 
 	function setEventCreationFee(uint newEventCreationFee) public onlyOwner {
 		eventCreationFee = newEventCreationFee;
+	}
+
+	function setTicketTransactionFee(uint newticketTransactionFee) public onlyOwner {
+		ticketTransactionFee = newticketTransactionFee;
 	}
 
 	function eventsSize() public view returns (uint256 size) {
@@ -155,4 +162,10 @@ contract EventManager is IEventManager, Ownable {
 	// function isListed(address nftAddress, uint tokenId) public view returns (bool) {
 	// 	return ticketMarket.isNftListed(nftAddress, tokenId);
 	// }
+
+	receive() external payable {
+        
+    }
+
+
 }

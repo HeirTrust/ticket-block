@@ -42,19 +42,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 	const evtMgrContract = await ethers.getContract('EventManager');
 
-	let tx = await evtMgrContract.createNewEvent('Consensus', 'CNFT', {
-		date: Math.floor(Date.parse('June 6, 2023') / 1000),
+	let tx = await evtMgrContract.createNewEvent('TicketBlock Launch', 'TBLCKL', {
+		date: Math.floor(Date.parse('Jul 6, 2023') / 1000),
 		id: 0,
-		desc: 'consensus 1',
-		email: 'email@email.com',
+		desc: 'Ticketblock launch',
+		email: 'info@ticketblock.com',
 		eventType: 0,
 		logo: 'https://picsum.photos/id/102/1280/960',
 		maxCapacity: 20,
-		name: 'Consensus 2023',
-		orgName: 'Consyn',
+		name: 'TicketBlock Launch',
+		orgName: 'TicketBlock',
 		owner: '0x0000000000000000000000000000000000000000',
 		ticketsSold: 0,
-		website: 'http://website.com',
+		website: 'http://ticketblock.com',
+	}, {
+		value: parseEther('2')
 	});
 
 	await tx.wait();
@@ -109,14 +111,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	// ];
 
 	const txCat = await evtContract.addTicketCategory(
-		'VIP for Consensus',
+		'TicketBlock Launch VIP',
 		'https://place-hold.it/200?text=vip',
 		10,
 		//@ts-ignore
 		ticketPrices.map((v: any, ix) => {
 			console.log('c is ', v);
 			return {
-				price: parseEther('2.5'),
+				price: parseEther('20'),
 				currency: v.address, //  this.ticketPricesFormArray.controls[ix].get('currency')?.value,
 			};
 			// return {
@@ -138,38 +140,42 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 	console.log('buyer is ', buyer);
 
-	const evtBuyerContract = await (
-		await ethers.getContractAt('Event', evtAddress)
-	).connect(await ethers.getSigner(buyer));
+	// const evtBuyerContract = await (
+	// 	await ethers.getContractAt('Event', evtAddress)
+	// ).connect(await ethers.getSigner(buyer));
 
-	console.log('about to approve');
+	// console.log('about to approve');
 
-	const tokenContract = await ethers.getContractAt('TestToken', ticketPrices[0].address);
-	let t1x = await tokenContract.transfer(buyer, ethers.utils.parseEther('200'));
-	await t1x.wait();
+	// const tokenContract = await ethers.getContractAt('TestToken', ticketPrices[0].address);
+	// let t1x = await tokenContract.transfer(buyer, ethers.utils.parseEther('200'));
+	// await t1x.wait();
 
-	const buyerTokenContract = await (
-		await ethers.getContractAt('TestToken', ticketPrices[0].address)
-	).connect(await ethers.getSigner(buyer));
+	// const buyerTokenContract = await (
+	// 	await ethers.getContractAt('TestToken', ticketPrices[0].address)
+	// ).connect(await ethers.getSigner(buyer));
 
-	let txAllow = await buyerTokenContract.approve(evtAddress, parseEther('1000'));
-	await txAllow.wait();
+	// let txAllow = await buyerTokenContract.approve(evtAddress, parseEther('1000'));
+	// await txAllow.wait();
 
-	console.log('approved');
+	// console.log('approved');
 
-	console.log('ticketPrices is ', ticketPrices);
-	try {
-		let txBuyTicket = await evtBuyerContract.buyTicket(
-			0,
-			1,
-			ticketPrices[0].address,
-			'https://test-tb.heirtrust.com/tickets/metadata/31337-0-4312023115918'
-		);
-		await txBuyTicket.wait();
-		console.log('bought');
-	} catch (err) {
-		console.error('Error Buying ticket: ', err);
-	}
+	// console.log('ticketPrices is ', ticketPrices);
+	// try {
+	// 	let txBuyTicket = await evtBuyerContract.buyTicket(
+	// 		0,
+	// 		1,
+	// 		ticketPrices[0].address,
+	// 		'https://test-tb.heirtrust.com/tickets/metadata/31337-0-4312023115918',
+
+	// 		{
+	// 			value: parseEther('0.105').toString()
+	// 		}
+	// 	);
+	// 	await txBuyTicket.wait();
+	// 	console.log('bought');
+	// } catch (err) {
+	// 	console.error('Error Buying ticket: ', err);
+	// }
 };
 export default func;
 func.tags = ['EventManager'];

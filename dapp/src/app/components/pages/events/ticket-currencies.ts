@@ -18,25 +18,41 @@
 // 	}
 //   ]
 
-// FantomTest
+// Fantom
 export const TicketCurrencies =  [
 	{
-	  "currency": "mFTM",
-	  "address": "0x6D096DA092FDF203c2886d88aD773A237822fD82"
+	  "currency": "FTM",
+	  "address": "0x0000000000000000000000000000000000000000"
 	},
 	{
 	  "currency": "mTick",
 	  "address": "0x245835214BBBB7caD494eDE7903394c09F3b2f90"
 	},
 	{
-	  "currency": "mUSDT",
-	  "address": "0x9F8FBFb135bfA9233347FA43516E6Ce233EA7e1D"
-	},
-	{
-	  "currency": "mUSDC",
-	  "address": "0x03342C286Bd8914B480D6134ebA774bc3229a28c"
+	  "currency": "USDC",
+	  "address": "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75"
 	}
   ]
+
+//   // FantomTest
+// export const TicketCurrencies =  [
+// 	{
+// 	  "currency": "mFTM",
+// 	  "address": "0x6D096DA092FDF203c2886d88aD773A237822fD82"
+// 	},
+// 	{
+// 	  "currency": "mTick",
+// 	  "address": "0x245835214BBBB7caD494eDE7903394c09F3b2f90"
+// 	},
+// 	{
+// 	  "currency": "mUSDT",
+// 	  "address": "0x9F8FBFb135bfA9233347FA43516E6Ce233EA7e1D"
+// 	},
+// 	{
+// 	  "currency": "mUSDC",
+// 	  "address": "0x03342C286Bd8914B480D6134ebA774bc3229a28c"
+// 	}
+//   ]
 
 // //Sepolia
 // export const TicketCurrencies = [
